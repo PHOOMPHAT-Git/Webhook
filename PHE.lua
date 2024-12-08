@@ -1,10 +1,19 @@
 local HttpService = game:GetService("HttpService")
 
 local payload = {
-    username = "By Phe",
-    avatar_url = _G.avatar_url,
+    username = _G.username,
+    avatar_url = (_G.avatar_url ~= "" and _G.avatar_url) or nil,
     content = _G.message,
+    embeds = {}
 }
+
+if _G.title ~= "" or _G.description ~= "" or _G.Image ~= "" then
+    table.insert(payload.embeds, {
+        title = _G.title ~= "" and _G.title or nil,
+        description = _G.description ~= "" and _G.description or nil,
+        image = (_G.Image ~= "" and {url = _G.Image}) or nil
+    })
+end
 
 local httpRequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request)
 local response = httpRequest({
