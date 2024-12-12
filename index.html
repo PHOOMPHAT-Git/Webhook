@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Sender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            max-width: 500px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            height: 200px;
+            resize: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>PHE Send Webhook</h1>
+    <form id="webhookForm">
+        <label for="webhookURL">Webhook URL :</label>
+        <input type="url" id="webhookURL" placeholder="https://discordapp.com/api/webhooks/" required>
+
+        <label for="username">Username :</label>
+        <input type="text" id="username" placeholder="Username webhook [ Not necessar ]">
+
+        <label for="avatarURL">Avatar URL :</label>
+        <input type="url" id="avatarURL" placeholder="Profile image [ Not necessar ]">
+
+        <label for="message">Message :</label>
+        <textarea id="message" rows="4" placeholder="This is the first line.\nThis is the second line."></textarea>
+
+        <label for="title">Embed Title :</label>
+        <input type="text" id="title" placeholder="Not necessar">
+
+        <label for="description">Embed Description :</label>
+        <textarea id="description" rows="4" placeholder="Not necessar"></textarea>
+
+        <label for="imageURL">Embed Image URL :</label>
+        <input type="url" id="imageURL" placeholder="Not necessar">
+
+        <button type="button" onclick="sendWebhook()">Send Webhook</button>
+    </form>
+
+    <script>
+        async function sendWebhook() {
+            const webhookURL = document.getElementById('webhookURL').value;
+            const username = document.getElementById('username').value;
+            const avatarURL = document.getElementById('avatarURL').value;
+            const message = document.getElementById('message').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const imageURL = document.getElementById('imageURL').value;
+
+            const payload = {
+                username: username || undefined,
+                avatar_url: avatarURL || undefined,
+                content: message || undefined,
+                embeds: []
+            };
+
+            if (title || description || imageURL) {
+                payload.embeds.push({
+                    title: title || undefined,
+                    description: description || undefined,
+                    image: imageURL ? { url: imageURL } : undefined
+                });
+            }
+
+            try {
+                const response = await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('Webhook sent successfully!');
+                } else {
+                    const error = await response.text();
+                    alert(`Failed to send webhook. Status: ${response.status}\nResponse: ${error}`);
+                }
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
