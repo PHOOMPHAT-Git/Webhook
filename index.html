@@ -78,9 +78,9 @@
             const webhookURL = document.getElementById('webhookURL').value;
             const username = document.getElementById('username').value;
             const avatarURL = document.getElementById('avatarURL').value;
-            const message = document.getElementById('message').value;
+            const message = document.getElementById('message').value.replace(/\\n/g, '\n');
             const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
+            const description = document.getElementById('description').value.replace(/\\n/g, '\n');
             const imageURL = document.getElementById('imageURL').value;
 
             const payload = {
