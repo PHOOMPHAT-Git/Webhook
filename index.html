@@ -74,6 +74,22 @@
     </form>
 
     <script>
+        window.onload = function() {
+            document.getElementById('webhookURL').value = localStorage.getItem('webhookURL') || '';
+            document.getElementById('username').value = localStorage.getItem('username') || '';
+            document.getElementById('avatarURL').value = localStorage.getItem('avatarURL') || '';
+            document.getElementById('message').value = localStorage.getItem('message') || '';
+            document.getElementById('title').value = localStorage.getItem('title') || '';
+            document.getElementById('description').value = localStorage.getItem('description') || '';
+            document.getElementById('imageURL').value = localStorage.getItem('imageURL') || '';
+        };
+
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', () => {
+                localStorage.setItem(input.id, input.value);
+            });
+        });
+
         async function sendWebhook() {
             const webhookURL = document.getElementById('webhookURL').value;
             const username = document.getElementById('username').value;
