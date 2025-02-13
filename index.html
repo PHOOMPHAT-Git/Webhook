@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webhook Sender</title>
+    <title>PHE Webhook</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,7 +47,7 @@
     </style>
 </head>
 <body>
-    <h1>PHE Send Webhook</h1>
+    <h1>PHE Webhook</h1>
     <form id="webhookForm">
         <label for="webhookURL">Webhook URL :</label>
         <input type="url" id="webhookURL" placeholder="https://discordapp.com/api/webhooks/" required>
@@ -59,7 +59,7 @@
         <input type="url" id="avatarURL" placeholder="Profile image [ Not necessar ]">
 
         <label for="message">Message :</label>
-        <textarea id="message" rows="4" placeholder="This is the first line.\nThis is the second line."></textarea>
+        <textarea id="message" rows="4" placeholder="Not necessar"></textarea>
 
         <label for="title">Embed Title :</label>
         <input type="text" id="title" placeholder="Not necessar">
@@ -99,6 +99,8 @@
             const description = document.getElementById('description').value.replace(/\\n/g, '\n');
             const imageURL = document.getElementById('imageURL').value;
 
+            const creditMessage = '_[PHE COMMUNITY](https://discord.gg/phoomphat) | [WEBSITE](https://webhook-phe.vercel.app/)_';
+
             const payload = {
                 username: username || undefined,
                 avatar_url: avatarURL || undefined,
@@ -109,9 +111,11 @@
             if (title || description || imageURL) {
                 payload.embeds.push({
                     title: title || undefined,
-                    description: description || undefined,
+                    description: (description ? description + '\n\n' : '') + creditMessage,
                     image: imageURL ? { url: imageURL } : undefined
                 });
+            } else {
+                payload.content = (message ? message + '\n\n' : '') + creditMessage;
             }
 
             try {
